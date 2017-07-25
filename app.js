@@ -2,12 +2,8 @@ const form = document.getElementById('registrar');
 const input = document.querySelector('input');
 const ul = document.getElementById('invitedList');
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const text = input.value;
-  input.value = '';
 
-  console.log(text);
+function createLI(text){
   const li = document.createElement('li');
   li.textContent = text;
   const label = document.createElement('label');
@@ -16,10 +12,22 @@ form.addEventListener('submit', (e) => {
   checkbox.type = 'checkbox';
   label.appendChild(checkbox);
   li.appendChild(label);
+  const editButton = document.createElement('button');
+  editButton.textContent = 'edit';
+  li.appendChild(editButton);
+  const removeButton = document.createElement('button');
+  removeButton.textContent = 'remove';
+  li.appendChild(removeButton);
 
-  const button = document.createElement('button');
-  button.textContent = 'remove';
-  li.appendChild(button);
+  return li;
+}
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = input.value;
+  input.value = '';
+
+  const li = createLI(text);
 
   ul.appendChild(li);
 });
@@ -41,10 +49,13 @@ ul.addEventListener('change', (e) =>{
 ul.addEventListener('click', (e) => {
 
   if(e.target.tagName == 'BUTTON'){
+    const button = e.target;
     const li = e.target.parentNode;
     const ul = li.parentNode;
-
-    ul.removeChild(li);
-
+    if(button.textContent === 'remove'){
+      ul.removeChild(li);
+    }else if(button.textContent === 'edit'){
+      console.log('edit');
+    }
   }
 });
